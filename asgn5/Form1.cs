@@ -77,8 +77,11 @@ namespace asgn5v1
 				new EventHandler(MenuAboutOnClick));
 			Menu = new MainMenu(new MenuItem[] {miFile, miAbout});
 
-			
-		}
+            //foreach (var button in Controls.OfType<Button>())
+            //{
+            //    button.Click += button_Click;
+            //}
+        }
 
 		/// <summary>
 		/// Clean up any resources being used.
@@ -351,25 +354,6 @@ namespace asgn5v1
                     }
                 }
 
-                //DUY &^%$#$%^&*&*(&*(@&(#*&*(@&#(&@*($^*@^*(#^(@^*#(@&*(#&(*&@*(#^^@*(^#(*&@*(&)$&)@&$()&()@)()(@&#()&@()#&
-
-
-                //double centerX = vertices[0, 0];
-                //double centerY = vertices[0, 1];
-                //double[,] centeringMatrix;
-
-                //centeringMatrix = translate(centerX * -1, centerY * -1, 0);
-                //centeringMatrix = transformationCalculator(centeringMatrix, scale(15, 15, 1));
-                //centeringMatrix = transformationCalculator(centeringMatrix, reflect('x'));
-                //centeringMatrix = transformationCalculator(centeringMatrix, translate(ClientRectangle.Width / 2, ClientRectangle.Height / 2, 0));
-
-                //scrnpts = matrixCalculator(scrnpts, centeringMatrix);
-
-
-
-     
-
-
                 //now draw the lines
 
                 for (int i = 0; i < numlines; i++)
@@ -406,7 +390,7 @@ namespace asgn5v1
             double centerY = vertices[0, 1];
 
             ctrans = translate(centerX * -1, centerY * -1, 0);
-            ctrans = transformationCalculator(ctrans, scale(15, 15, 1));
+            ctrans = transformationCalculator(ctrans, scale((ClientRectangle.Height / 2) / 20, (ClientRectangle.Height / 2) / 20, (ClientRectangle.Height / 2) / 20));
             ctrans = transformationCalculator(ctrans, reflect('x'));
             ctrans = transformationCalculator(ctrans, translate(ClientRectangle.Width / 2, ClientRectangle.Height / 2, 0));
 
@@ -517,7 +501,11 @@ namespace asgn5v1
 
 		private void toolBar1_ButtonClick(object sender, System.Windows.Forms.ToolBarButtonClickEventArgs e)
 		{
-			if (e.Button == transleftbtn)
+            double centerX = scrnpts[0, 0];
+            double centerY = scrnpts[0, 1];
+            double centerZ = scrnpts[0, 2];
+
+            if (e.Button == transleftbtn)
 			{
                 ctrans = transformationCalculator(ctrans, translate(-5, 0, 0));
                 Refresh();
@@ -529,93 +517,116 @@ namespace asgn5v1
 			}
 			if (e.Button == transupbtn)
 			{
-                ctrans = transformationCalculator(ctrans, translate(0, 5, 0));
+                ctrans = transformationCalculator(ctrans, translate(0, -5, 0));
                 Refresh();
 			}
 			
 			if(e.Button == transdownbtn)
 			{
-                ctrans = transformationCalculator(ctrans, translate(0, -5, 0));
+                ctrans = transformationCalculator(ctrans, translate(0, 5, 0));
                 Refresh();
 			}
 			if (e.Button == scaleupbtn) 
 			{
-                double centerX = scrnpts[0, 0];
-                double centerY = scrnpts[0, 1];
-
-                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                 ctrans = transformationCalculator(ctrans, scale(1.25, 1.25, 1));
-                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
 			}
 			if (e.Button == scaledownbtn) 
 			{
-                double centerX = scrnpts[0, 0];
-                double centerY = scrnpts[0, 1];
-
-                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                 ctrans = transformationCalculator(ctrans, scale(0.75, 0.75, 1));
-                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
 			}
 			if (e.Button == rotxby1btn) 
 			{
-                double centerX = scrnpts[0, 0];
-                double centerY = scrnpts[0, 1];
-
-                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                 ctrans = transformationCalculator(ctrans, rotate(0.05, 'x'));
-                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
             }
 			if (e.Button == rotyby1btn) 
 			{
-                double centerX = scrnpts[0, 0];
-                double centerY = scrnpts[0, 1];
-
-                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                 ctrans = transformationCalculator(ctrans, rotate(0.05, 'y'));
-                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
             }
 			if (e.Button == rotzby1btn) 
 			{
-                double centerX = scrnpts[0, 0];
-                double centerY = scrnpts[0, 1];
-
-                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                 ctrans = transformationCalculator(ctrans, rotate(0.05, 'z'));
-                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, 0));
+                ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
             }
 
 			if (e.Button == rotxbtn) 
 			{
-				
+			    while(true)
+                {
+                    System.Threading.Thread.Sleep(50);
+
+                    ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
+                    ctrans = transformationCalculator(ctrans, rotate(0.05, 'x'));
+                    ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
+
+                    Refresh();
+                }	
 			}
+
 			if (e.Button == rotybtn) 
 			{
-				
-			}
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(50);
+
+                    ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
+                    ctrans = transformationCalculator(ctrans, rotate(0.05, 'y'));
+                    ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
+
+                    Refresh();
+                }
+            }
 			
 			if (e.Button == rotzbtn) 
 			{
-				
-			}
+                while (true)
+                {
+                    System.Threading.Thread.Sleep(50);
+
+                    ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
+                    ctrans = transformationCalculator(ctrans, rotate(0.05, 'z'));
+                    ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
+
+                    Refresh();
+                }
+            }
 
 			if(e.Button == shearleftbtn)
 			{
-				Refresh();
+                double temp = ctrans[3, 1];
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, temp * -1, centerZ * -1));
+                ctrans = transformationCalculator(ctrans, shear(.10, "left"));
+                ctrans = transformationCalculator(ctrans, translate(centerX, temp, centerZ));
+
+                Refresh();
 			}
 
 			if (e.Button == shearrightbtn) 
 			{
-				Refresh();
+                double temp = ctrans[3, 1];
+                ctrans = transformationCalculator(ctrans, translate(centerX * -1, temp * -1, centerZ * -1));
+                ctrans = transformationCalculator(ctrans, shear(.10, "right"));
+                ctrans = transformationCalculator(ctrans, translate(centerX, temp, centerZ));
+
+                Refresh();
 			}
 
 			if (e.Button == resetbtn)
@@ -722,6 +733,7 @@ namespace asgn5v1
 
             return matrix;
         }
+
         private double[,] rotate(double degree, char axis)
         {
             double[,] matrix = new double[4, 4];
@@ -764,6 +776,35 @@ namespace asgn5v1
                 default:
                     break;
             }
+
+            return matrix;
+        }
+
+        private double[,] shear(double factor, string direction)
+        {
+            double[,] matrix = new double[4, 4];
+
+            switch (direction) {
+                case "left":
+                    matrix[0, 0] = 1;
+                    matrix[1, 1] = 1;
+                    matrix[2, 2] = 1;
+                    matrix[3, 3] = 1;
+
+                    matrix[1, 0] = factor;
+                    break;
+                case "right":
+                    matrix[0, 0] = 1;
+                    matrix[1, 1] = 1;
+                    matrix[2, 2] = 1;
+                    matrix[3, 3] = 1;
+
+                    matrix[1, 0] = factor * -1;
+                    break;
+                default:
+                    break;
+            }
+
 
             return matrix;
         }
