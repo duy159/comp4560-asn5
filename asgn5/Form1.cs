@@ -49,6 +49,7 @@ namespace asgn5v1
 		private System.Windows.Forms.ToolBarButton resetbtn;
 		private System.Windows.Forms.ToolBarButton exitbtn;
 		int[,] lines;
+        private static Timer _timer;
 
 		public Transformer()
 		{
@@ -63,7 +64,7 @@ namespace asgn5v1
 			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
 			this.SetStyle(ControlStyles.UserPaint, true);
 			this.SetStyle(ControlStyles.DoubleBuffer, true);
-			Text = "COMP 4560:  Assignment 5 (200830) (Your Name Here)";
+			Text = "COMP 4560:  Assignment 5 (A00884869) (Duy Le)";
 			ResizeRedraw = true;
 			BackColor = Color.Black;
 			MenuItem miNewDat = new MenuItem("New &Data...",
@@ -81,6 +82,9 @@ namespace asgn5v1
             //{
             //    button.Click += button_Click;
             //}
+
+            _timer = new System.Windows.Forms.Timer();
+            _timer.Interval = 1;
         }
 
 		/// <summary>
@@ -318,8 +322,7 @@ namespace asgn5v1
             this.Load += new System.EventHandler(this.Transformer_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
-		}
+        }
 		#endregion
 
 		/// <summary>
@@ -417,7 +420,12 @@ namespace asgn5v1
 					if (text != null) coorddata.Add(text);
 				} while (text != null);
 				reader.Close();
-				DecodeCoords(coorddata);
+                try {
+                    DecodeCoords(coorddata);
+                } catch(Exception e)
+                {
+                    MessageBox.Show("Please select a valid coordinate file");
+                }
 			}
 			else
 			{
@@ -437,7 +445,12 @@ namespace asgn5v1
 					if (text != null) linesdata.Add(text);
 				} while (text != null);
 				reader.Close();
-				DecodeLines(linesdata);
+                try {
+                    DecodeLines(linesdata);
+                } catch(Exception e)
+                {
+                    MessageBox.Show("Please select a valid lines file");
+                }
 			}
 			else
 			{
@@ -505,31 +518,40 @@ namespace asgn5v1
             double centerY = scrnpts[0, 1];
             double centerZ = scrnpts[0, 2];
 
+            if (_timer.Enabled)
+            {
+                _timer.Stop();
+            }
+
+            _timer = new Timer();
+            _timer.Interval = 1;
+
+
             if (e.Button == transleftbtn)
 			{
-                ctrans = transformationCalculator(ctrans, translate(-5, 0, 0));
+                ctrans = transformationCalculator(ctrans, translate(-75, 0, 0));
                 Refresh();
             }
 			if (e.Button == transrightbtn) 
 			{
-                ctrans = transformationCalculator(ctrans, translate(5, 0, 0));
+                ctrans = transformationCalculator(ctrans, translate(75, 0, 0));
                 Refresh();
 			}
 			if (e.Button == transupbtn)
 			{
-                ctrans = transformationCalculator(ctrans, translate(0, -5, 0));
+                ctrans = transformationCalculator(ctrans, translate(0, -35, 0));
                 Refresh();
 			}
 			
 			if(e.Button == transdownbtn)
 			{
-                ctrans = transformationCalculator(ctrans, translate(0, 5, 0));
+                ctrans = transformationCalculator(ctrans, translate(0, 35, 0));
                 Refresh();
 			}
 			if (e.Button == scaleupbtn) 
 			{
                 ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
-                ctrans = transformationCalculator(ctrans, scale(1.25, 1.25, 1));
+                ctrans = transformationCalculator(ctrans, scale(1.10, 1.10, 1));
                 ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
@@ -537,7 +559,7 @@ namespace asgn5v1
 			if (e.Button == scaledownbtn) 
 			{
                 ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
-                ctrans = transformationCalculator(ctrans, scale(0.75, 0.75, 1));
+                ctrans = transformationCalculator(ctrans, scale(0.9, 0.9, 1));
                 ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
 
                 Refresh();
@@ -569,44 +591,38 @@ namespace asgn5v1
 
 			if (e.Button == rotxbtn) 
 			{
-			    while(true)
+                _timer.Tick += new EventHandler((object o, EventArgs a) =>
                 {
-                    System.Threading.Thread.Sleep(50);
-
                     ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                     ctrans = transformationCalculator(ctrans, rotate(0.05, 'x'));
                     ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
-
-                    Refresh();
-                }	
-			}
+                    Invalidate();
+                });
+                _timer.Start();
+            }
 
 			if (e.Button == rotybtn) 
 			{
-                while (true)
+                _timer.Tick += new EventHandler((object o, EventArgs a) =>
                 {
-                    System.Threading.Thread.Sleep(50);
-
                     ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                     ctrans = transformationCalculator(ctrans, rotate(0.05, 'y'));
                     ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
-
-                    Refresh();
-                }
+                    Invalidate();
+                });
+                _timer.Start();
             }
 			
 			if (e.Button == rotzbtn) 
 			{
-                while (true)
+                _timer.Tick += new EventHandler((object o, EventArgs a) =>
                 {
-                    System.Threading.Thread.Sleep(50);
-
                     ctrans = transformationCalculator(ctrans, translate(centerX * -1, centerY * -1, centerZ * -1));
                     ctrans = transformationCalculator(ctrans, rotate(0.05, 'z'));
                     ctrans = transformationCalculator(ctrans, translate(centerX, centerY, centerZ));
-
-                    Refresh();
-                }
+                    Invalidate();
+                });
+                _timer.Start();
             }
 
 			if(e.Button == shearleftbtn)
@@ -638,7 +654,6 @@ namespace asgn5v1
 			{
 				Close();
 			}
-
 		}
 
         private double[,] matrixCalculator(double[,] m1, double[,] m2)
@@ -737,15 +752,6 @@ namespace asgn5v1
         private double[,] rotate(double degree, char axis)
         {
             double[,] matrix = new double[4, 4];
-
-            /*
-            matrix[0, 0] = Math.Cos((Math.PI / 180) * degree);
-            matrix[0, 1] = Math.Sin((Math.PI / 180) * degree);
-            matrix[1, 0] = Math.Sin((Math.PI / 180) * degree) * -1;
-            matrix[1, 1] = Math.Cos((Math.PI / 180) * degree);
-            matrix[2, 2] = 1;
-            matrix[3, 3] = 1;
-            */
 
             switch (axis)
             {
